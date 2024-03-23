@@ -5,11 +5,14 @@
 </head>
 <body>
   <h1>RabbitMQ Message Queue</h1>
+  <input id="messageInput" type="text" placeholder="Enter your message" />
   <button onclick="sendMessage()">Send Message</button>
 
   <script>
     function sendMessage() {
-      fetch('http://localhost:3000/send')
+      const message = document.getElementById('messageInput').value;
+
+      fetch(`http://localhost:3000/send/${encodeURIComponent(message)}`)
         .then(response => response.text())
         .then(data => alert(data));
     }
