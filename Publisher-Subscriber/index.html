@@ -5,11 +5,14 @@
 </head>
 <body>
   <h1>RabbitMQ Pub/Sub</h1>
+  <input id="messageInput" type="text" placeholder="Enter your message" />
   <button onclick="publishMessage()">Publish Message</button>
 
   <script>
     function publishMessage() {
-      fetch('/publish')
+      const message = document.getElementById('messageInput').value;
+
+      fetch(`http://localhost:3000/publish/${encodeURIComponent(message)}`)
         .then(response => response.text())
         .then(data => alert(data));
     }
