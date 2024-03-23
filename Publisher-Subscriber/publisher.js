@@ -1,13 +1,16 @@
+// Import the express package to create and configure the server
 const express = require("express");
+
+// Import the amqplib package to interact with RabbitMQ
 const amqp = require("amqplib");
 
+// Initialize the express application
 const app = express();
 
-// import the dependencies required for cors
+// Import the cors middleware to enable CORS on the server
 const cors = require("cors");
 
-// allow cross-origin requests to reach the Expres.js server
-// from localhost:3000, which is your frontend domain
+// Configure CORS to allow requests from a specific origin (http://localhost:3000) and to handle preflight requests
 app.options(
   "*",
   cors({
@@ -17,22 +20,29 @@ app.options(
 );
 app.use(cors());
 
-app.get("/publish", async (req, res) => {
+// Define a route that listens on GET requests to "/publish/:message"
+app.get("/publish/:message", async (req, res) => {
+  const message = req.params.message; // Extract the message from the route parameter
+
+  // Connect to RabbitMQ server
   const connection = await amqp.connect("amqp://localhost");
   const channel = await connection.createChannel();
 
-  const exchangeName = "logs";
+  // Setup the exchange
+  const exchangeName = "logs"; // Name of the exchange
   await channel.assertExchange(exchangeName, "fanout", { durable: false });
 
-  const message = "Hello, Pub/Sub!";
+  // Publish the message
   channel.publish(exchangeName, "", Buffer.from(message));
 
+  // Close the channel and the connection to clean up resources
   await channel.close();
   await connection.close();
 
   res.send("Message published to RabbitMQ");
 });
 
+// Start the server on port 3000
 app.listen(3000, () => {
   console.log("Publisher running on port 3000");
 });
