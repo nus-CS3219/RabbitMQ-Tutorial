@@ -26,6 +26,15 @@ RabbitMQ is a powerful message-broker software that enables communication betwee
 
    The management plugin provides a web-based UI for managing and monitoring the RabbitMQ server. You can now access the RabbitMQ management dashboard in your web browser at http://localhost:15672. Use the default credentials: username "guest" and password "guest".
 
+## Basic Concepts
+
+- **Producer**: An application that sends messages to RabbitMQ.
+- **Consumer**: An application that receives messages from RabbitMQ.
+- **Queue**: A buffer that stores messages until they are consumed.
+- **Exchange**: A component that routes messages to one or more queues based on binding rules.
+- **Binding**: A relationship between an exchange and a queue that determines how messages are routed.
+
+
 ## Message Queue
 
 1. Go to the "Producer-Consumer" folder and install the required dependencies:
