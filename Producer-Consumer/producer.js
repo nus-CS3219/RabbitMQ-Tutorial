@@ -1,5 +1,6 @@
 // Import the express package to create and configure the server
 const express = require("express");
+
 // Import the amqplib package to interact with RabbitMQ
 const amqp = require("amqplib");
 
