@@ -191,8 +191,6 @@ This demonstrates the pub/sub pattern, where multiple subscribers can receive th
 >
 > In the pub/sub example, we ran multiple subscribers, and they all received the same published message. In this additional exploration, try running multiple consumers (`consumer.js`) in the previous producer-consumer example and observe how RabbitMQ distributes messages across them.
 
-<br>
-
 ## **Further Exploration and References**
 
 This tutorial has covered some core concepts of RabbitMQ and demonstrated the message queue and publish/subscribe patterns using Node.js. However, RabbitMQ is a powerful tool with many more features and use cases to explore.
