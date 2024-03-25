@@ -177,7 +177,7 @@ This line of code creates a temporary queue. Temporary queues are useful in scen
 
 ### **Explanation of the Pub/Sub Example**
 
-In this pub/sub example, the producer (`producer.js`) publishes messages to an *exchange* named "logs" instead of sending them directly to a queue. The exchange is declared as a "fanout" type, which means it will broadcast the messages to all the queues bound to it.
+In this pub/sub example, the publisher (`publisher.js`) publishes messages to an *exchange* named "logs" instead of sending them directly to a queue. The exchange is declared as a "fanout" type, which means it will broadcast the messages to all the queues bound to it.
 
 Each subscriber (`subscriber.js`) creates an exclusive queue and *binds* it to the "logs" exchange. Each subscriber will then receive its own copy of the published messages.
 
@@ -193,4 +193,4 @@ This demonstrates the pub/sub pattern, where multiple subscribers can receive th
 
 This tutorial has covered some core concepts of RabbitMQ and demonstrated the message queue and publish/subscribe patterns using Node.js. However, RabbitMQ is a powerful tool with many more features and use cases to explore.
 
-The [official RabbitMQ tutorials](https://www.rabbitmq.com/tutorials/tutorial-one-javascript) provide a wealth of information and cover more advanced topics in depth. Use them as a reference and continue learning and exploring the powerful capabilities of RabbitMQ.
+The [official RabbitMQ tutorials](https://www.rabbitmq.com/tutorials/tutorial-one-javascript) provide a wealth of information and covers more advanced topics in depth. Use them as a reference and continue learning and exploring the powerful capabilities of RabbitMQ.
