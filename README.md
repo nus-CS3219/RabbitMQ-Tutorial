@@ -78,7 +78,7 @@ This example demonstrates the basic concept of message queues, where messages ar
 1. Stop the consumer if it's running but ensure the producer is running.
 2. Without the consumer running, send multiple messages to RabbitMQ.
 3. After the messages are sent, stop the producer.
-4. Now, start the consumer by running `node consumer.js` in a separate terminal.
+4. Now, start the consumer by running `node consumer.js`.
 5. Observe the output in the consumer terminal.
 
 You should see all the messages that were sent by the producer before the consumer started, demonstrating the asynchronous nature of message queues. Messages are persisted in the queue until they are consumed, regardless of whether the consumer is running when they are sent or the producer is running when they are delivered.
@@ -103,7 +103,7 @@ The previous exercise demonstrates RabbitMQ is able to hold the messages until t
 
 Unfortunately, When RabbitMQ quits or crashes, it will forget the queues and messages unless we tell it not to. To make sure that messages aren't lost, we need to mark **both the queue and messages** as *durable*.
 
-1. In both the `producer.js` and `consumer.js` files, find the line where the queue is declared and update it to (note a new queue name is used):
+1. In both the `producer.js` and `consumer.js` files, find the line where the queue is declared and update it to (note that a new queue name is used):
 
    ```javascript
    await channel.assertQueue("durable_message_queue", { durable: true });
@@ -123,7 +123,7 @@ Unfortunately, When RabbitMQ quits or crashes, it will forget the queues and mes
 
 1. Open the `consumer.js` file and comment out or remove the line `channel.ack(message);` which acknowledges the successful processing of a message by the consumer.
 2. Restart the consumer by running `node consumer.js`.
-3. Send a message from the web interface.
+3. Start the producer and send a message from the web interface.
 4. Observe the output in the consumer terminal. You should see the message being logged.
 5. Stop and restart the consumer multiple times. What do you observe? Compare this behavior to when the acknowledgment (`ack`) is used.
 
@@ -159,9 +159,9 @@ Let's extend the previous example to demonstrate the publish/subscribe (pub/sub)
 
 ### **Concepts**
 
-- **Exchange**: A message routing agent responsible for receiving messages from producers and pushing them to one or more queues based on the *exchange type*.
-  - **Fanout** exchange: Simply routes messages to all queues bound to the exchange.
-- **Binding**: A relationship between an exchange and a queue which tells the exchange to send messages to the queue.
+- **Exchange**: A message routing agent responsible for receiving messages from producers/publishers and pushing them to one or more queues based on the *exchange type*.
+  - **Fanout** exchange type: Broadcasts (routes) messages to all queues bound to the exchange.
+- **Binding**: A relationship between an exchange and a queue that tells the exchange to send messages to the queue.
 
 :blue_book:**Temporary queues**
 
@@ -169,25 +169,29 @@ Let's extend the previous example to demonstrate the publish/subscribe (pub/sub)
 channel.assertQueue("", { exclusive: true });
 ```
 
-This line of code creates a temporary queue. Temporary queues are useful in scenarios where a fresh, empty queue is needed and there is no need to share it between producers and consumers. The queue created has some properties:
+This line of code in `subscriber.js` creates a temporary queue. Temporary queues are useful in scenarios where a fresh, empty queue is needed upon connecting to RabbitMQ, and there is no need to share it between producers and consumers. The queue created has some properties:
 
-- **Randomly named:** RabbitMQ generates a unique name for the queue when it is declared with an empty string as the queue name.
+- **Randomly named:** RabbitMQ generates a unique, random name for the queue when the queue is declared with an empty string as its name.
 - **Automatically deleted:** The queue is automatically deleted when the connection that declared it closes. This ensures cleanup and avoids unused queues.
 - **Exclusive usage:** The queue is declared as *exclusive*, meaning only the connection that created it can consume messages from it.
 
 ### **Explanation of the Pub/Sub Example**
 
-In this pub/sub example, the producer (`producer.js`) publishes messages to an *exchange* named "logs" instead of sending them directly to a queue. The exchange is declared as a "fanout" type, which means it will broadcast the messages to all the queues bound to it.
+In this pub/sub example, the publisher (`publisher.js`) creates an exchange named "logs". The exchange is declared as a "fanout" type, which means it will broadcast the messages to all the queues bound to it.
 
-Each subscriber (`subscriber.js`) creates an exclusive queue and *binds* it to the "logs" exchange. Each subscriber will then receive its own copy of the published messages.
+Each subscriber (`subscriber.js`) creates an exclusive queue and binds it to the "logs" exchange. Each subscriber will then receive its own copy of the published messages.
 
-When you click the "Publish Message" button in the web interface, the producer publishes a message to the "logs" exchange. The exchange then distributes the message to all the bound queues, and each subscriber consumes and logs the received message.
+When you click the "Publish Message" button in the web interface, the publisher publishes a message to the "logs" exchange. The exchange then distributes the message to all the bound queues, and each subscriber consumes and logs the received message.
 
 This demonstrates the pub/sub pattern, where multiple subscribers can receive the same message independently. It allows for decoupling of the message producers and consumers, enabling scalable and flexible architectures.
+
+
 
 > :book:**Additional Exercise**
 >
 > In the pub/sub example, we ran multiple subscribers, and they all received the same published message. In this additional exploration, try running multiple consumers (`consumer.js`) in the previous producer-consumer example and observe how RabbitMQ distributes messages across them.
+
+
 
 ## **Further Exploration and References**
 
