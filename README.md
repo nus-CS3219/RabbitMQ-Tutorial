@@ -52,7 +52,7 @@ RabbitMQ is a powerful message-broker software that enables communication betwee
 3. Open the `index.html` file in a web browser and click the "Send Message" button.
    Observe the output in the consumer terminal, which should display the received message.
 
-#### **Concepts**
+### **Concepts**
 
 - **Producer**: An application that sends messages.
 - **Consumer**: An application that mostly waits to receive messages.
@@ -63,7 +63,7 @@ RabbitMQ is a powerful message-broker software that enables communication betwee
 - **Connection**: A TCP connection established between the application and RabbitMQ. We need this connection for the application to communicate with the RabbitMQ broker.
 - **Channel**: A logical/virtual connection **within a connection** that is used for sending and receiving messages, as well as managing queues, exchanges, bindings, and other RabbitMQ entities. Channels are lightweight, and multiple channels can be *multiplexed over a single connection*, which can be thought of as they share the single TCP connection.
 
-#### **Explanation of the Message Queue Example**
+### **Explanation of the Message Queue Example**
 
 In this example, we have a simple web interface with a button that triggers a message to be sent to RabbitMQ. The producer (`producer.js`) defines an Express route named "/send" that sends a message to a queue named "message_queue" when the endpoint is accessed.
 
@@ -71,9 +71,9 @@ The consumer (`consumer.js`) connects to RabbitMQ and consumes messages from the
 
 This example demonstrates the basic concept of message queues, where messages are sent by producers and consumed by consumers asynchronously.
 
-#### :book:**Exercises**
+### :book:**Exercises**
 
-##### **Asynchronous Message Delivery**
+#### **Asynchronous Message Delivery**
 
 1. Stop the consumer if it's running but ensure the producer is running.
 2. Without the consumer running, send multiple messages to RabbitMQ.
@@ -87,7 +87,7 @@ You should see all the messages that were sent by the producer before the consum
 >
 > You can access the RabbitMQ management dashboard at http://localhost:15672 (with the default guest/guest credentials) to observe the queues, messages, and other details. This can be a useful tool for monitoring and troubleshooting your RabbitMQ setup.
 
-##### Message Durability
+#### Message Durability
 
 The previous exercise demonstrates RabbitMQ is able to hold the messages until they are consumed, but what if the RabbitMQ server stops before the messages are consumed? Let's simulate this scenario.
 
@@ -119,7 +119,7 @@ Unfortunately, When RabbitMQ quits or crashes, it will forget the queues and mes
 
 4. After these changes, repeat the steps, and undelivered messages should now be persisted even after RabbitMQ restarts.
 
-##### Consumer Acknowledgment and Message Redelivery
+#### Consumer Acknowledgment and Message Redelivery
 
 1. Open the `consumer.js` file and comment out or remove the line `channel.ack(message);` which acknowledges the successful processing of a message by the consumer.
 2. Restart the consumer by running `node consumer.js`.
@@ -157,7 +157,7 @@ Let's extend the previous example to demonstrate the publish/subscribe (pub/sub)
    Observe the output in all the subscriber terminals, which should display the received message.
 
 
-#### **Concepts**
+### **Concepts**
 
 - **Exchange**: A message routing agent responsible for receiving messages from producers and pushing them to one or more queues based on the *exchange type*.
   - **Fanout** exchange: Simply routes messages to all queues bound to the exchange.
@@ -175,7 +175,7 @@ This line of code creates a temporary queue. Temporary queues are useful in scen
 - **Automatically deleted:** The queue is automatically deleted when the connection that declared it closes. This ensures cleanup and avoids unused queues.
 - **Exclusive usage:** The queue is declared as *exclusive*, meaning only the connection that created it can consume messages from it.
 
-#### **Explanation of the Pub/Sub Example**
+### **Explanation of the Pub/Sub Example**
 
 In this pub/sub example, the producer (`producer.js`) publishes messages to an *exchange* named "logs" instead of sending them directly to a queue. The exchange is declared as a "fanout" type, which means it will broadcast the messages to all the queues bound to it.
 
