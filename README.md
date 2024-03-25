@@ -177,7 +177,7 @@ This line of code in `subscriber.js` creates a temporary queue. Temporary queues
 
 ### **Explanation of the Pub/Sub Example**
 
-In this pub/sub example, the publisher (`publisher.js`) creates an exchange named "logs". The exchange is declared as a "fanout" type, which means it will broadcast the messages to all the queues bound to it.
+In this pub/sub example, the publisher (`publisher.js`) creates an exchange named "logs". The exchange is declared to be of type "fanout", which means it will broadcast the messages to all the queues bound to it.
 
 Each subscriber (`subscriber.js`) creates an exclusive queue and binds it to the "logs" exchange. Each subscriber will then receive its own copy of the published messages.
 
@@ -185,13 +185,13 @@ When you click the "Publish Message" button in the web interface, the publisher 
 
 This demonstrates the pub/sub pattern, where multiple subscribers can receive the same message independently. It allows for decoupling of the message producers and consumers, enabling scalable and flexible architectures.
 
-
+<br>
 
 > :book:**Additional Exercise**
 >
 > In the pub/sub example, we ran multiple subscribers, and they all received the same published message. In this additional exploration, try running multiple consumers (`consumer.js`) in the previous producer-consumer example and observe how RabbitMQ distributes messages across them.
 
-
+<br>
 
 ## **Further Exploration and References**
 
