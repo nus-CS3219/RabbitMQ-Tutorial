@@ -10,11 +10,11 @@ const app = express();
 // Import the cors middleware to enable CORS on the server
 const cors = require("cors");
 
-// Configure CORS to allow requests from a specific origin (http://localhost:3000) and to handle preflight requests
+// Configure CORS to allow requests from a specific origin (http://localhost:3001) and to handle preflight requests
 app.options(
   "*",
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3001",
     optionsSuccessStatus: 200,
   })
 );
@@ -42,7 +42,7 @@ app.get("/publish/:message", async (req, res) => {
   res.send("Message published to RabbitMQ");
 });
 
-// Start the server on port 3000
-app.listen(3000, () => {
-  console.log("Publisher running on port 3000");
+// Start the server on port 3001
+app.listen(3001, () => {
+  console.log("Publisher running on port 3001");
 });
