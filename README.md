@@ -9,6 +9,7 @@ RabbitMQ is a powerful message-broker software that enables communication betwee
 - Basic understanding of messaging and queueing concepts
 - Node.js and npm installed on your machine. You can visit this [page](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) for installation instructions.
 - Docker installed on your machine
+- Clone [https://github.com/nus-CS3219/RabbitMQ-Tutorial](https://github.com/nus-CS3219/RabbitMQ-Tutorial) to your device.
 
 ## Setup and Installation
 
@@ -28,6 +29,7 @@ RabbitMQ is a powerful message-broker software that enables communication betwee
 
 
 ## Message Queue
+Now in the project folder...
 
 1. Go to the "Producer-Consumer" folder and install the required dependencies:
 
