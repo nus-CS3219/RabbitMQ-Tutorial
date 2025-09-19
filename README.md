@@ -1,4 +1,4 @@
-# Tutorial: Introduction to RabbitMQ
+#CS3219 SE Toolbox - Messaging Queues
 
 ## Overview
 
