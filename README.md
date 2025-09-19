@@ -60,7 +60,7 @@ Now in the project folder...
 - **Consumer**: An application that mostly waits to receive messages.
 - **Queue**: A buffer maintained by RabbitMQ that stores messages until they are consumed.
 
-:blue_book:**Connection and Channel**
+📘**Connection and Channel**
 
 - **Connection**: A TCP connection established between the application and RabbitMQ. We need this connection for the application to communicate with the RabbitMQ broker.
 - **Channel**: A logical/virtual connection **within a connection** that is used for sending and receiving messages, as well as managing queues, exchanges, bindings, and other RabbitMQ entities. Channels are lightweight, and multiple channels can be *multiplexed over a single connection*, which can be thought of as they share the single TCP connection.
@@ -73,7 +73,7 @@ The consumer (`consumer.js`) connects to RabbitMQ and consumes messages from the
 
 This example demonstrates the basic concept of message queues, where messages are sent by producers and consumed by consumers asynchronously.
 
-### :book:**Exercises**
+### 📖**Exercises**
 
 #### **Asynchronous Message Delivery**
 
@@ -85,7 +85,7 @@ This example demonstrates the basic concept of message queues, where messages ar
 
 You should see all the messages that were sent by the producer before the consumer started, demonstrating the asynchronous nature of message queues. Messages are persisted in the queue until they are consumed, regardless of whether the consumer is running when they are sent or the producer is running when they are delivered.
 
-> :bulb:**Tips**
+> 💡**Tips**
 >
 > You can access the RabbitMQ management dashboard at http://localhost:15672 (with the default guest/guest credentials) to observe the queues, messages, and other details. This can be a useful tool for monitoring and troubleshooting your RabbitMQ setup.
 
@@ -165,7 +165,7 @@ Let's extend the previous example to demonstrate the publish/subscribe (pub/sub)
   - **Fanout** exchange type: Broadcasts (routes) messages to all queues bound to the exchange.
 - **Binding**: A relationship between an exchange and a queue that tells the exchange to send messages to the queue.
 
-:blue_book:**Temporary queues**
+📘**Temporary queues**
 
 ```javascript
 channel.assertQueue("", { exclusive: true });
@@ -189,7 +189,7 @@ This demonstrates the pub/sub pattern, where multiple subscribers can receive th
 
 <br>
 
-> :book:**Additional Exercise**
+> 📖**Additional Exercise**
 >
 > In the pub/sub example, we ran multiple subscribers, and they all received the same published message. In this additional exploration, try running multiple consumers (`consumer.js`) in the previous producer-consumer example and observe how RabbitMQ distributes messages across them.
 
