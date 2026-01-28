@@ -4,12 +4,50 @@
 
 RabbitMQ is a powerful message-broker software that enables communication between applications using messages. It provides a reliable and scalable platform for building distributed systems and implementing messaging patterns like message queues and publish-subscribe (pub/sub).
 
+##  Learning Objectives
+By the end of this tutorial, you should be able to:
+1. Understand the basic concepts of RabbitMQ and message queuing.
+2. Install and configure RabbitMQ on your machine.
+3. Write basic programs to send and receive messages using RabbitMQ.
+4. Understand how to route messages using exchanges and bindings.
+
 ## Prerequisites
 
 - Basic understanding of messaging and queueing concepts
 - Node.js and npm installed on your machine. You can visit this [page](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) for installation instructions.
 - Docker installed on your machine
 - Clone [https://github.com/nus-CS3219/RabbitMQ-Tutorial](https://github.com/nus-CS3219/RabbitMQ-Tutorial) to your device.
+
+## What is RabbitMQ?
+RabbitMQ is a message broker: it accepts and forwards messages. You can think about it as a post office: when you put the mail that you want posting in a post box, you can be sure that the letter carrier will eventually deliver the mail to your recipient. In this analogy, RabbitMQ is a post box, a post office, and a letter carrier.
+
+The core components of RabbitMQ are:
+- **Producer**: An application that sends messages to RabbitMQ.  
+<p align="center">
+<img width="34" alt="Screenshot 2024-09-10 at 03 35 26" src="https://github.com/user-attachments/assets/187064d2-e1b4-422c-97b3-66a153fa44b6">
+</p>
+
+- **Queue**: A buffer that stores messages waiting to be processed. Although messages flow through RabbitMQ and your applications, they can only be stored inside a _queue_. A _queue_ is only bound by the host's memory & disk limits, it's essentially a large message buffer. Many _producers_ can send messages that go to one queue, and many _consumers_ can try to receive data from one _queue_. This is how we represent a queue:
+
+<p align="center">
+   <img width="141" alt="Screenshot 2024-09-10 at 03 38 29" src="https://github.com/user-attachments/assets/d3a745e8-b84e-4c5e-81e4-3f89c0714e85">
+</p>
+
+- **Consumer**: A program that receives messages from RabbitMQ. It has a similar meaning to receiving.
+
+<p align="center">
+   <img width="44" alt="Screenshot 2024-09-10 at 03 38 46" src="https://github.com/user-attachments/assets/dc7419ef-7554-4cc6-a909-92af296aff7f">
+</p>
+
+In the diagram below, "P" is our producer and "C" is our consumer. The box in the middle is a queue - a message buffer that RabbitMQ keeps on behalf of the consumer.
+
+
+<p align="center">
+   <img width="230" alt="Screenshot 2024-09-10 at 03 39 01" src="https://github.com/user-attachments/assets/98dc16f9-a3ca-404c-b027-c8f733d0e6e2">
+</p>
+
+>[!note]
+>Note that the producer, consumer, and broker do not have to reside on the same host; indeed in most applications they don't. An application can be both a producer and consumer, too.
 
 ## Setup and Installation
 
@@ -25,7 +63,9 @@ RabbitMQ is a powerful message-broker software that enables communication betwee
    docker run -d --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management
    ```
 
-   The management plugin provides a web-based UI for managing and monitoring the RabbitMQ server. You can now access the RabbitMQ management dashboard in your web browser at http://localhost:15672. Use the default credentials: username "guest" and password "guest".
+   The management plugin provides a web-based UI for managing and monitoring the RabbitMQ server. You can now access the RabbitMQ management dashboard in your web browser at http://localhost:15672.
+>[!note]
+>Use the default credentials: username "guest" and password "guest".
 
 ## Message Queue
 
@@ -51,8 +91,13 @@ Now in the project folder...
    node consumer.js
    ```
 
-3. Open the `index.html` file in a web browser and click the "Send Message" button.
-   Observe the output in the consumer terminal, which should display the received message.
+3. Open the `index.html` file under the `Producer-Consumer` folder in a web browser, input the message like "Hello world", and click the "Send Message" button.
+
+<p align="center">
+   <img width="425" alt="Screenshot 2024-09-10 at 03 48 45" src="https://github.com/user-attachments/assets/796a4f35-e42d-4185-a482-272a0a0e18bf">
+</p>
+
+4. Observe the output in the consumer terminal, which should display the received message.
 
 ### **Concepts**
 
@@ -77,7 +122,7 @@ This example demonstrates the basic concept of message queues, where messages ar
 
 #### **Asynchronous Message Delivery**
 
-1. Stop the consumer if it's running but ensure the producer is running.
+1. Stop the consumer (use `ctrl-c` to stop it) if it's running but ensure the producer is running.
 2. Without the consumer running, send multiple messages to RabbitMQ.
 3. After the messages are sent, stop the producer.
 4. Now, start the consumer by running `node consumer.js`.
@@ -121,6 +166,9 @@ Unfortunately, When RabbitMQ quits or crashes, it will forget the queues and mes
 
 4. After these changes, repeat the steps, and undelivered messages should now be persisted even after RabbitMQ restarts.
 
+>[!note]
+>Marking messages as persistent doesn't fully guarantee that a message won't be lost. Although it tells RabbitMQ to save the message to disk, there is still a short time window when RabbitMQ has accepted a message and hasn't saved it yet. Also, RabbitMQ doesn't do `fsync(2)` for every message -- it may be just saved to cache and not really written to the disk. The persistence guarantees aren't strong, but it's more than enough for our simple task queue. If you need a stronger guarantee then you can use [publisher confirms](https://www.rabbitmq.com/docs/confirms).
+
 #### Consumer Acknowledgment and Message Redelivery
 
 1. Open the `consumer.js` file and comment out or remove the line `channel.ack(message);` which acknowledges the successful processing of a message by the consumer.
@@ -149,14 +197,19 @@ Let's extend the previous example to demonstrate the publish/subscribe (pub/sub)
    node publisher.js
    ```
 
-   Start **multiple instances of the subscriber** by running the following command in separate terminals:
+   Open multiple terminals and start **multiple instances of the subscriber** by running the following command in separate terminals:
 
    ```sh
    node subscriber.js
    ```
 
 3. Open the `index.html` file in a web browser and click the "Publish Message" button.
-   Observe the output in all the subscriber terminals, which should display the received message.
+
+<p align="center">
+   <img width="310" alt="Screenshot 2024-09-10 at 03 50 40" src="https://github.com/user-attachments/assets/5eb415c5-807f-486c-8a19-eec4a2199d31">
+</p>
+
+4. Observe the output in all the subscriber terminals, which should display the received message.
 
 ### **Concepts**
 
@@ -192,8 +245,16 @@ This demonstrates the pub/sub pattern, where multiple subscribers can receive th
 >
 > In the pub/sub example, we ran multiple subscribers, and they all received the same published message. In this additional exploration, try running multiple consumers (`consumer.js`) in the previous producer-consumer example and observe how RabbitMQ distributes messages across them.
 
-## **Further Exploration and References**
-
-This tutorial has covered some core concepts of RabbitMQ and demonstrated the message queue and publish/subscribe patterns using Node.js. However, RabbitMQ is a powerful tool with many more features and use cases to explore.
-
+## Conclusion and Further Exploration
+🎉Congratulations! You have successfully set up RabbitMQ and explored some core concepts of RabbitMQ, including message queues and the publish/subscribe patterns using Node.js. However, RabbitMQ is a powerful tool with many more features and use cases to explore:
+• Routing messages using **direct** and **topic** exchanges.
+• Use RabbitMQ to build an Remote Procedure Call (RPC) system
 The [official RabbitMQ tutorials](https://www.rabbitmq.com/tutorials/tutorial-one-javascript) provide a wealth of information and cover more advanced topics in depth. Use them as a reference and continue learning and exploring the powerful capabilities of RabbitMQ.
+
+
+## References
+- [Official RabbitMQ Documentation](https://www.rabbitmq.com/documentation.html)
+- [RabbitMQ tutorial - Publish/Subscribe](https://www.rabbitmq.com/tutorials/tutorial-three-javascript)
+- Outline generated with [ChatGPT](https://openai.com/blog/chatgpt)
+## Other Resources
+- [RabbitMQ on Docker](https://hub.docker.com/_/rabbitmq)
