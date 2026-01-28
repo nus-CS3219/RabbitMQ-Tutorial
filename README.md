@@ -15,25 +15,25 @@ RabbitMQ is a powerful message-broker software that enables communication betwee
 
 1. Pull the official RabbitMQ image from Docker Hub:
 
-   ```
+   ```sh
    docker pull rabbitmq:3-management
    ```
 
 2. Run a RabbitMQ container with the management plugin enabled:
 
-   ```
+   ```sh
    docker run -d --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management
    ```
 
    The management plugin provides a web-based UI for managing and monitoring the RabbitMQ server. You can now access the RabbitMQ management dashboard in your web browser at http://localhost:15672. Use the default credentials: username "guest" and password "guest".
 
-
 ## Message Queue
+
 Now in the project folder...
 
 1. Go to the "Producer-Consumer" folder and install the required dependencies:
 
-   ```
+   ```sh
    npm install
    ```
 
@@ -41,13 +41,13 @@ Now in the project folder...
 
    Start the producer by running the following command in a terminal:
 
-   ```
+   ```sh
    node producer.js
    ```
 
    Start the consumer by running the following command in a separate terminal:
 
-   ```
+   ```sh
    node consumer.js
    ```
 
@@ -97,7 +97,7 @@ The previous exercise demonstrates RabbitMQ is able to hold the messages until t
 
 2. Before starting the consumer, restart the Docker container running the RabbitMQ server:
 
-   ```
+   ```sh
    docker restart some-rabbit
    ```
 
@@ -131,13 +131,13 @@ Unfortunately, When RabbitMQ quits or crashes, it will forget the queues and mes
 
 By removing the acknowledgment from the consumer, messages are repeatedly delivered and consumed. RabbitMQ assumes unacknowledged messages haven't been processed successfully and redelivers them after a consumer restart, ensuring no message is lost even if a worker dies.
 
-# Publish/Subscribe
+## Publish/Subscribe
 
 Let's extend the previous example to demonstrate the publish/subscribe (pub/sub) pattern using RabbitMQ and Node.js.
 
 1. Now go to the "Publisher-Subscriber" folder and install the required dependencies:
 
-   ```
+   ```sh
    npm install
    ```
 
@@ -145,19 +145,18 @@ Let's extend the previous example to demonstrate the publish/subscribe (pub/sub)
 
    Start the publisher by running the following command in a terminal:
 
-   ```
+   ```sh
    node publisher.js
    ```
 
    Start **multiple instances of the subscriber** by running the following command in separate terminals:
 
-   ```
+   ```sh
    node subscriber.js
    ```
 
 3. Open the `index.html` file in a web browser and click the "Publish Message" button.
    Observe the output in all the subscriber terminals, which should display the received message.
-
 
 ### **Concepts**
 
