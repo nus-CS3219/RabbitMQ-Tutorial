@@ -199,3 +199,7 @@ This demonstrates the pub/sub pattern, where multiple subscribers can receive th
 This tutorial has covered some core concepts of RabbitMQ and demonstrated the message queue and publish/subscribe patterns using Node.js. However, RabbitMQ is a powerful tool with many more features and use cases to explore.
 
 The [official RabbitMQ tutorials](https://www.rabbitmq.com/tutorials/tutorial-one-javascript) provide a wealth of information and cover more advanced topics in depth. Use them as a reference and continue learning and exploring the powerful capabilities of RabbitMQ.
+
+## AI Declaration
+
+Some parts of this guide were structured, formatted, and refined with the assistance of `ChatGPT`. The model was used to draft technical explanations and generate code snippets. All code snippets used in the guide and command sequences were reviewed, implemented, and tested by the teaching team to ensure accuracy and functionality.
