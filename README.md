@@ -27,7 +27,7 @@ RabbitMQ is a powerful message-broker software that enables communication betwee
    docker run -d --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management
    ```
 
-   The management plugin provides a web-based UI for managing and monitoring the RabbitMQ server. You can now access the RabbitMQ management dashboard in your web browser at http://localhost:15672. Use the default credentials: username "guest" and password "guest".
+   The management plugin provides a web-based UI for managing and monitoring the RabbitMQ server. You can now access the RabbitMQ management dashboard in your web browser at <http://localhost:15672>. Use the default credentials: username "guest" and password "guest".
 
 ## Message Queue
 
@@ -62,20 +62,20 @@ Now in the project folder...
 - **Consumer**: An application that mostly waits to receive messages.
 - **Queue**: A buffer maintained by RabbitMQ that stores messages until they are consumed.
 
-📘**Connection and Channel**
+#### **Connection and Channel**
 
 - **Connection**: A TCP connection established between the application and RabbitMQ. We need this connection for the application to communicate with the RabbitMQ broker.
 - **Channel**: A logical/virtual connection **within a connection** that is used for sending and receiving messages, as well as managing queues, exchanges, bindings, and other RabbitMQ entities. Channels are lightweight, and multiple channels can be *multiplexed over a single connection*, which can be thought of as they share the single TCP connection.
 
 ### **Explanation of the Message Queue Example**
 
-In this example, we have a simple web interface with a button that triggers a message to be sent to RabbitMQ. The producer (`producer.js`) defines an Express route named "/send" that sends a message to a queue named "message_queue" when the endpoint is accessed.
+In this example, we have a simple web interface with a button that triggers a message to be sent to RabbitMQ. The producer (`producer.js`) defines an Express route named `/send` that sends a message to a queue named "message_queue" when the endpoint is accessed.
 
 The consumer (`consumer.js`) connects to RabbitMQ and consumes messages from the same queue (i.e., the one named "message_queue"). Whenever a message is received, it is logged to the console.
 
 This example demonstrates the basic concept of message queues, where messages are sent by producers and consumed by consumers asynchronously.
 
-### 📖**Exercises**
+### **Exercises**
 
 #### **Asynchronous Message Delivery**
 
@@ -89,7 +89,7 @@ You should see all the messages that were sent by the producer before the consum
 
 > 💡**Tips**
 >
-> You can access the RabbitMQ management dashboard at http://localhost:15672 (with the default guest/guest credentials) to observe the queues, messages, and other details. This can be a useful tool for monitoring and troubleshooting your RabbitMQ setup.
+> You can access the RabbitMQ management dashboard at <http://localhost:15672> (with the default guest/guest credentials) to observe the queues, messages, and other details. This can be a useful tool for monitoring and troubleshooting your RabbitMQ setup.
 
 #### Message Durability
 
@@ -166,7 +166,7 @@ Let's extend the previous example to demonstrate the publish/subscribe (pub/sub)
   - **Fanout** exchange type: Broadcasts (routes) messages to all queues bound to the exchange.
 - **Binding**: A relationship between an exchange and a queue that tells the exchange to send messages to the queue.
 
-📘**Temporary queues**
+#### **Temporary queues**
 
 ```javascript
 channel.assertQueue("", { exclusive: true });
@@ -180,17 +180,17 @@ This line of code in `subscriber.js` creates a temporary queue. Temporary queues
 
 ### **Explanation of the Pub/Sub Example**
 
-In this pub/sub example, the publisher (`publisher.js`) creates an exchange named "logs". The exchange is declared to be of type "fanout", which means it will broadcast the messages to all the queues bound to it.
+In this pub/sub example, the publisher (`publisher.js`) creates an exchange named `"logs"`. The exchange is declared to be of type **fanout**, which means it will broadcast the messages to all the queues bound to it.
 
 Each subscriber (`subscriber.js`) creates an exclusive queue and binds it to the "logs" exchange. Each subscriber will then receive its own copy of the published messages.
 
-When you click the "Publish Message" button in the web interface, the publisher publishes a message to the "logs" exchange. The exchange then distributes the message to all the bound queues, and each subscriber consumes and logs the received message.
+When you click the "Publish Message" button in the web interface, the publisher publishes a message to the `"logs"` exchange. The exchange then distributes the message to all the bound queues, and each subscriber consumes and logs the received message.
 
 This demonstrates the pub/sub pattern, where multiple subscribers can receive the same message independently. It allows for decoupling of the message producers and consumers, enabling scalable and flexible architectures.
 
 <br>
 
-> 📖**Additional Exercise**
+> **Additional Exercise**
 >
 > In the pub/sub example, we ran multiple subscribers, and they all received the same published message. In this additional exploration, try running multiple consumers (`consumer.js`) in the previous producer-consumer example and observe how RabbitMQ distributes messages across them.
 
